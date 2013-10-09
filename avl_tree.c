@@ -61,6 +61,29 @@ void avltree_print2(avltree_t* me)
     printf("\n");
 }
 
+static void __enlarge(avltree_t* me)
+{
+    int ii, end;
+    node_t *array_n;
+
+    /* double capacity */
+    me->size *= 2;
+    array_n = malloc(me->size * sizeof(node_t));
+
+    /* copy old data across to new array */
+    for (ii = 0, end = avltree_count(me); ii < end; ii++)
+    {
+        if (me->nodes[ii].key)
+            memcpy(&array_n[ii], &me->nodes[ii], sizeof(node_t));
+        else
+            array_n[ii].key = NULL;
+    }
+
+    /* swap arrays */
+    free(me->nodes);
+    me->nodes = array_n;
+}
+
 avltree_t* avltree_new(int (*cmp)(
     const void *e1,
     const void *e2,
@@ -288,14 +311,15 @@ void* avltree_remove(avltree_t* me, void* k)
     return NULL;
 }
 
+
 void avltree_insert(avltree_t* me, void* k, void* v)
 {
     int i;
+    node_t* n;
 
     for (i=0; i < me->size; )
     {
         int r;
-        node_t *n;
 
         n = &me->nodes[i];
 
@@ -335,6 +359,11 @@ void avltree_insert(avltree_t* me, void* k, void* v)
         }
     }
 
-    assert(0);
+    /* we outside of the loop because we need to enlarge */
+    __enlarge(me);
+    n = &me->nodes[i];
+    n->key = k;
+    n->val = v;
+    me->count += 1;
 }
 
