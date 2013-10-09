@@ -6,6 +6,8 @@
 
 #include "avl_tree.h"
 
+#define max(x,y) ((x) < (y) ? (y) : (x))
+
 static int __child_l(const int idx)
 {
     return idx * 2 + 1;
@@ -18,8 +20,10 @@ static int __child_r(const int idx)
 
 static int __parent(const int idx)
 {
+#if 0
     if (idx == 0) return *(int*)NULL;
-//    assert(idx != 0);
+#endif
+    assert(idx != 0);
     return (idx - 1) / 2;
 }
 
@@ -85,8 +89,6 @@ int avltree_count(avltree_t* me)
     return __count(me,0);
 //    return me->count;
 }
-
-#define max(x,y) ((x) < (y) ? (y) : (x))
 
 static int __height(avltree_t* me, int idx)
 {
@@ -179,6 +181,7 @@ void avltree_rotate_left(avltree_t* me, int idx)
 
 static void __rebalance(avltree_t* me, int idx)
 {
+
     while (1)
     {
         if (2 <= abs(
@@ -207,6 +210,84 @@ static void __rebalance(avltree_t* me, int idx)
     }
 }
 
+static int __previous_ordered_node(avltree_t* me, int idx)
+{
+    int prev,i;
+
+    for (prev = -1, i = __child_l(idx);
+        /* array isn't that big, or key is null -> we don't have this child */
+        i < me->size && me->nodes[i].key;
+        prev = i, i = __child_r(i)
+        );
+
+    return prev;
+}
+
+void* avltree_remove(avltree_t* me, void* k)
+{
+    int i;
+
+    for (i=0; i < me->size; )
+    {
+        int r;
+        node_t *n;
+
+        n = &me->nodes[i];
+
+        /* couldn't find it */
+        if (!n->key)
+            return NULL;
+
+        r = me->cmp(n->key,k,NULL);
+
+        if (r==0)
+        {
+            /* replacement */
+            int rep;
+
+            me->count -= 1;
+
+            k = n->key;
+
+            rep = __previous_ordered_node(me,i);
+            if (-1 == rep)
+            {
+                /* make sure the node is now blank */
+                n->key = NULL;
+            }
+            else
+            {
+                /* have r's left node become right node of r's parent.
+                 * NOTE: r by definition shouldn't have a right child */
+                __shift_up(me, __child_l(rep), __child_r(__parent(rep)));
+
+                /* have r replace deleted node */
+                __shift_up(me,rep,i);
+            }
+
+            if (i!=0)
+                __rebalance(me,__parent(i));
+
+            return k;
+        }
+        else if (r < 0)
+        {
+            i = __child_l(i);
+        }
+        else if (r > 0)
+        {
+            i = __child_r(i);
+        }
+        else
+        {
+            assert(0);
+        }
+    }
+
+    /* couldn't find it */
+    return NULL;
+}
+
 void avltree_insert(avltree_t* me, void* k, void* v)
 {
     int i;
@@ -224,7 +305,11 @@ void avltree_insert(avltree_t* me, void* k, void* v)
             n->key = k;
             n->val = v;
             me->count += 1;
-            __rebalance(me,i);
+
+            if (0 == i)
+                return;
+
+            __rebalance(me,__parent(i));
             return;
         }
 
