@@ -1,4 +1,3 @@
-
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -359,7 +358,7 @@ void avltree_insert(avltree_t* me, void* k, void* v)
         }
     }
 
-    /* we outside of the loop because we need to enlarge */
+    /* we're outside of the loop because we need to enlarge */
     __enlarge(me);
     n = &me->nodes[i];
     n->key = k;
