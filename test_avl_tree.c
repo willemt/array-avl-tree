@@ -82,11 +82,11 @@ void TestAVLTree_rotate_left_keeps_count(
     avltree_insert(t,(void*)11,(void*)1);
     avltree_insert(t,(void*)13,(void*)1);
     avltree_rotate_left(t,2);
-    CuAssertTrue(tc, 12 == (int)avltree_get(t,0));
-    CuAssertTrue(tc, 10 == (int)avltree_get(t,1));
-    CuAssertTrue(tc, 8 == (int)avltree_get(t,3));
-    CuAssertTrue(tc, 11 == (int)avltree_get(t,4));
-    CuAssertTrue(tc, 13 == (int)avltree_get(t,2));
+    CuAssertTrue(tc, 12 == (int)avltree_get_from_idx(t,0));
+    CuAssertTrue(tc, 10 == (int)avltree_get_from_idx(t,1));
+    CuAssertTrue(tc, 8 == (int)avltree_get_from_idx(t,3));
+    CuAssertTrue(tc, 11 == (int)avltree_get_from_idx(t,4));
+    CuAssertTrue(tc, 13 == (int)avltree_get_from_idx(t,2));
     CuAssertTrue(tc, 5 == avltree_count(t));
     CuAssertTrue(tc, 3 == avltree_height(t));
 }
@@ -105,11 +105,11 @@ void TestAVLTree_rotate_right_keeps_count(
     avltree_insert(t,(void*)11,(void*)1);
     avltree_insert(t,(void*)8,(void*)1);
     avltree_rotate_right(t,0);
-    CuAssertTrue(tc, 10 == (int)avltree_get(t,0));
-    CuAssertTrue(tc, 8 == (int)avltree_get(t,1));
-    CuAssertTrue(tc, 12 == (int)avltree_get(t,2));
-    CuAssertTrue(tc, 11 == (int)avltree_get(t,5));
-    CuAssertTrue(tc, 13 == (int)avltree_get(t,6));
+    CuAssertTrue(tc, 10 == (int)avltree_get_from_idx(t,0));
+    CuAssertTrue(tc, 8 == (int)avltree_get_from_idx(t,1));
+    CuAssertTrue(tc, 12 == (int)avltree_get_from_idx(t,2));
+    CuAssertTrue(tc, 11 == (int)avltree_get_from_idx(t,5));
+    CuAssertTrue(tc, 13 == (int)avltree_get_from_idx(t,6));
     CuAssertTrue(tc, 5 == avltree_count(t));
     CuAssertTrue(tc, 3 == avltree_height(t));
 }
@@ -129,11 +129,11 @@ void TestAVLTree_double_rotate_keeps_count(
     avltree_insert(t,(void*)8,(void*)1);
     avltree_rotate_right(t,0);
     avltree_rotate_left(t,2);
-    CuAssertTrue(tc, 12 == (int)avltree_get(t,0));
-    CuAssertTrue(tc, 10 == (int)avltree_get(t,1));
-    CuAssertTrue(tc, 8 == (int)avltree_get(t,3));
-    CuAssertTrue(tc, 11 == (int)avltree_get(t,4));
-    CuAssertTrue(tc, 13 == (int)avltree_get(t,2));
+    CuAssertTrue(tc, 12 == (int)avltree_get_from_idx(t,0));
+    CuAssertTrue(tc, 10 == (int)avltree_get_from_idx(t,1));
+    CuAssertTrue(tc, 8 == (int)avltree_get_from_idx(t,3));
+    CuAssertTrue(tc, 11 == (int)avltree_get_from_idx(t,4));
+    CuAssertTrue(tc, 13 == (int)avltree_get_from_idx(t,2));
     CuAssertTrue(tc, 5 == avltree_count(t));
     CuAssertTrue(tc, 3 == avltree_height(t));
 }
@@ -173,10 +173,10 @@ void TestAVLTree_remove_keeps_tree_balanced(
     avltree_insert(t,(void*)11,(void*)1);
     avltree_insert(t,(void*)8,(void*)1);
     avltree_remove(t,(void*)10);
-    CuAssertTrue(tc, 12 == (int)avltree_get(t,0));
-    CuAssertTrue(tc, 8 == (int)avltree_get(t,1));
-    CuAssertTrue(tc, 13 == (int)avltree_get(t,2));
-    CuAssertTrue(tc, 11 == (int)avltree_get(t,4));
+    CuAssertTrue(tc, 12 == (int)avltree_get_from_idx(t,0));
+    CuAssertTrue(tc, 8 == (int)avltree_get_from_idx(t,1));
+    CuAssertTrue(tc, 13 == (int)avltree_get_from_idx(t,2));
+    CuAssertTrue(tc, 11 == (int)avltree_get_from_idx(t,4));
     CuAssertTrue(tc, 4 == avltree_count(t));
     CuAssertTrue(tc, 3 == avltree_height(t));
 }

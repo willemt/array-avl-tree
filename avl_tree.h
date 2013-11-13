@@ -45,3 +45,7 @@ int avltree_count(avltree_t* me);
 int avltree_height(avltree_t* me);
 
 void avltree_insert(avltree_t* me, void* k, void* v);
+
+void* avltree_get(avltree_t* me, const void* k);
+
+void* avltree_get_from_idx(avltree_t* me, int idx);

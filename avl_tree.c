@@ -171,7 +171,46 @@ void avltree_rotate_right(avltree_t* me, int idx)
     __shift_up(me,__child_l(idx), idx);
 }
 
-void* avltree_get(avltree_t* me, int idx)
+void* avltree_get(avltree_t* me, const void* k)
+{
+    int i;
+
+    for (i=0; i < me->size; )
+    {
+        int r;
+        node_t *n;
+
+        n = &me->nodes[i];
+
+        /* couldn't find it */
+        if (!n->key)
+            return NULL;
+
+        r = me->cmp(n->key,k,NULL);
+
+        if (r==0)
+        {
+            return n->val;
+        }
+        else if (r < 0)
+        {
+            i = __child_l(i);
+        }
+        else if (r > 0)
+        {
+            i = __child_r(i);
+        }
+        else
+        {
+            assert(0);
+        }
+    }
+
+    /* couldn't find it */
+    return NULL;
+}
+
+void* avltree_get_from_idx(avltree_t* me, int idx)
 {
     return me->nodes[idx].key;
 }
