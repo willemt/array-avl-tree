@@ -56,7 +56,7 @@ void avltree_print2(avltree_t* me)
     int i;
 
     for (i=0;i<me->size; i++)
-        printf("%d%c", (int)me->nodes[i].key, i==me->size ? '|' : ' ');
+        printf("%lx%c", (unsigned long int)me->nodes[i].key, i==me->size ? '|' : ' ');
     printf("\n");
 }
 
