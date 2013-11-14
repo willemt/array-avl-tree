@@ -11,8 +11,7 @@
 
 static int __uint_compare(
     const void *e1,
-    const void *e2,
-    const void *udata __attribute__((__unused__))
+    const void *e2
 )
 {
     return e2 - e1;

@@ -85,8 +85,7 @@ static void __enlarge(avltree_t* me)
 
 avltree_t* avltree_new(int (*cmp)(
     const void *e1,
-    const void *e2,
-    const void *udata))
+    const void *e2))
 {
     avltree_t* me;
 
@@ -110,6 +109,11 @@ int avltree_count(avltree_t* me)
 {
     return __count(me,0);
 //    return me->count;
+}
+
+int avltree_size(avltree_t* me)
+{
+    return me->size;
 }
 
 static int __height(avltree_t* me, int idx)
@@ -185,7 +189,7 @@ void* avltree_get(avltree_t* me, const void* k)
         if (!n->key)
             return NULL;
 
-        r = me->cmp(n->key,k,NULL);
+        r = me->cmp(n->key,k);
 
         if (r==0)
         {
@@ -299,7 +303,7 @@ void* avltree_remove(avltree_t* me, void* k)
         if (!n->key)
             return NULL;
 
-        r = me->cmp(n->key,k,NULL);
+        r = me->cmp(n->key,k);
 
         if (r==0)
         {
@@ -349,6 +353,15 @@ void* avltree_remove(avltree_t* me, void* k)
     return NULL;
 }
 
+void avltree_empty(avltree_t* me)
+{
+    int i;
+
+    for (i=0; i<me->size; i++)
+    {
+        me->nodes[i].key = NULL;
+    }
+}
 
 void avltree_insert(avltree_t* me, void* k, void* v)
 {
@@ -375,7 +388,7 @@ void avltree_insert(avltree_t* me, void* k, void* v)
             return;
         }
 
-        r = me->cmp(n->key,k,NULL);
+        r = me->cmp(n->key,k);
 
         if (r==0)
         {
@@ -403,5 +416,100 @@ void avltree_insert(avltree_t* me, void* k, void* v)
     n->key = k;
     n->val = v;
     me->count += 1;
+}
+
+void* avltree_iterator_peek(avltree_t * h, avltree_iterator_t * iter)
+{
+    if (iter->current_node < h->size)
+    {
+        node_t *next;
+
+        next = &h->nodes[++iter->current_node];
+        if (next->key)
+            return next;
+    }
+
+    return NULL;
+}
+
+void* avltree_iterator_peek_value(avltree_t * h, avltree_iterator_t * iter)
+{
+    return avltree_get(h,avltree_iterator_peek(h,iter));
+}
+
+int avltree_iterator_has_next(avltree_t * h, avltree_iterator_t * iter)
+{
+    return NULL != avltree_iterator_peek(h,iter);
+}
+
+/**
+ * Iterate to the next item on an iterator
+ * @return next item value from iterator */
+void *avltree_iterator_next_value(avltree_t * h, avltree_iterator_t * iter)
+{
+    void* k;
+    
+    k = avltree_iterator_next(h,iter);
+    if (!k) return NULL;
+    return avltree_get(h,k);
+}
+
+/**
+ * Iterate to the next item on an iterator
+ * @return next item key from iterator */
+void *avltree_iterator_next(avltree_t * h, avltree_iterator_t * iter)
+{
+    node_t *n;
+    node_t *next;
+    int next_id;
+
+    assert(iter);
+
+    n = &h->nodes[iter->current_node];
+
+    while (iter->current_node < h->size - 1)
+    {
+        next = &h->nodes[++iter->current_node];
+        if (next->key)
+            break;
+    }
+#if 0
+    while (1)
+    {
+        next_id = __child_l(iter->current_node)
+        next = &h->nodes[next_id];
+        if (!next->key)
+        {
+            next_id = __child_r(iter->current_node)
+            next = &h->nodes[next_id];
+            if (!next->key)
+            {
+                int descendant;
+
+                parent = __parent(iter->current_node);
+                next_id = __parent(iter->current_node)
+                while (__child_r(next_id) == parent)
+                {
+                    parent = __parent(iter->current_node);
+                    next_id = __parent(iter->current_node)
+                    next_id = __child_r(next_id)
+                    next = &h->nodes[next_id];
+                }
+
+            }
+        }
+    }
+#endif
+
+    return n;
+}
+
+/**
+ * Initialise a new hash iterator over this hash
+ * It is NOT safe to remove items while iterating.
+ */
+void avltree_iterator(avltree_t * h, avltree_iterator_t * iter)
+{
+    iter->current_node = 0;
 }
 
