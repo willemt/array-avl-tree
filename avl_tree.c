@@ -40,7 +40,7 @@ static void __print(avltree_t* me, int idx, int d)
         return;
     }
 
-    printf("%d\n", (int)me->nodes[idx].key);
+    printf("%lx\n", (unsigned long int)me->nodes[idx].key);
     __print(me, __child_l(idx),d+1);
     __print(me, __child_r(idx),d+1);
 }
