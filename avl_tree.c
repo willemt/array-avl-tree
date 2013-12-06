@@ -107,8 +107,8 @@ static int __count(avltree_t* me, int idx)
 
 int avltree_count(avltree_t* me)
 {
-    return __count(me,0);
-//    return me->count;
+//    return __count(me,0);
+    return me->count;
 }
 
 int avltree_size(avltree_t* me)
