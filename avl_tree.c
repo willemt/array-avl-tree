@@ -83,7 +83,7 @@ static void __enlarge(avltree_t* me)
     me->nodes = array_n;
 }
 
-avltree_t* avltree_new(unsigned long (*cmp)(
+avltree_t* avltree_new(long (*cmp)(
     const void *e1,
     const void *e2))
 {

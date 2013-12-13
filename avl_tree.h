@@ -8,7 +8,7 @@ typedef struct {
     /* size of array */
     int size;
     int count;
-    unsigned long (*cmp)(
+    long (*cmp)(
         const void *e1,
         const void *e2);
     node_t *nodes;
@@ -18,7 +18,7 @@ typedef struct {
     int current_node;
 } avltree_iterator_t;
 
-avltree_t* avltree_new(unsigned long (*cmp)( const void *e1, const void *e2));
+avltree_t* avltree_new(long (*cmp)( const void *e1, const void *e2));
 
 int avltree_count(avltree_t* me);
 
