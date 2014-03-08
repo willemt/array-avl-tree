@@ -131,8 +131,6 @@ int avltree_height(avltree_t* me)
 
 static void __shift_up(avltree_t* me, int idx, int towards)
 {
-    int p;
-
     if (!me->nodes[idx].key)
         return;
 
@@ -461,7 +459,6 @@ void *avltree_iterator_next(avltree_t * h, avltree_iterator_t * iter)
 {
     node_t *n;
     node_t *next;
-    int next_id;
 
     assert(iter);
 
