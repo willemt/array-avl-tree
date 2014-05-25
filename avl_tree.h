@@ -20,7 +20,9 @@ typedef struct {
     int current_node;
 } avltree_iterator_t;
 
-avltree_t* avltree_new(long (*cmp)( const void *e1, const void *e2));
+avltree_t* avltree_new(long (*cmp)(const void *e1, const void *e2));
+
+void* avltree_remove(avltree_t* me, void* k);
 
 int avltree_count(avltree_t* me);
 

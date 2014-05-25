@@ -9,7 +9,7 @@
 
 #include "avl_tree.h"
 
-static int __uint_compare(
+static long __uint_compare(
     const void *e1,
     const void *e2
 )

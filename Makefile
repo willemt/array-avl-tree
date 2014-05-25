@@ -11,7 +11,7 @@ main.c:
 
 test: main.c avl_tree.o tests/test_avl_tree.c tests/CuTest.c main.c
 	$(CC) $(CCFLAGS) -o $@ $^
-	./tests
+	./test
 	gcov main.c tests/test_avl_tree.c avl_tree.c
 
 avl_tree.o: avl_tree.c
