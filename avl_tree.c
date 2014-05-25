@@ -150,12 +150,6 @@ static void __shift_down(avltree_t* me, int idx, int towards)
     memcpy(&me->nodes[towards], &me->nodes[idx], sizeof(node_t));
 }
 
-/**
- * Rotate on X:
- * Y = X's left child
- * Step A: X becomes right child of X's left child
- * Step B: X's left child's right child becomes X's left child
- * */
 void avltree_rotate_right(avltree_t* me, int idx)
 {
     /* A Partial
@@ -216,12 +210,6 @@ void* avltree_get_from_idx(avltree_t* me, int idx)
     return me->nodes[idx].key;
 }
 
-/**
- * Rotate on X:
- * Y = X's parent
- * Step A: Y becomes left child of X
- * Step B: X's left child's becomes Y's right child
- * */
 void avltree_rotate_left(avltree_t* me, int idx)
 {
     int p;
@@ -292,7 +280,7 @@ void* avltree_remove(avltree_t* me, void* k)
 
     for (i=0; i < me->size; )
     {
-        unsigned long r;
+        long r;
         node_t *n;
 
         n = &me->nodes[i];
@@ -368,8 +356,6 @@ void avltree_insert(avltree_t* me, void* k, void* v)
 
     for (i=0; i < me->size; )
     {
-        unsigned long r;
-
         n = &me->nodes[i];
 
         /* found an empty slot */
@@ -386,7 +372,7 @@ void avltree_insert(avltree_t* me, void* k, void* v)
             return;
         }
 
-        r = me->cmp(n->key,k);
+        long r = me->cmp(n->key,k);
 
         if (r==0)
         {
@@ -440,9 +426,6 @@ int avltree_iterator_has_next(avltree_t * h, avltree_iterator_t * iter)
     return NULL != avltree_iterator_peek(h,iter);
 }
 
-/**
- * Iterate to the next item on an iterator
- * @return next item value from iterator */
 void *avltree_iterator_next_value(avltree_t * h, avltree_iterator_t * iter)
 {
     void* k;
@@ -452,9 +435,6 @@ void *avltree_iterator_next_value(avltree_t * h, avltree_iterator_t * iter)
     return avltree_get(h,k);
 }
 
-/**
- * Iterate to the next item on an iterator
- * @return next item key from iterator */
 void *avltree_iterator_next(avltree_t * h, avltree_iterator_t * iter)
 {
     node_t *n;
@@ -501,11 +481,8 @@ void *avltree_iterator_next(avltree_t * h, avltree_iterator_t * iter)
     return n;
 }
 
-/**
- * Initialise a new hash iterator over this hash
- * It is NOT safe to remove items while iterating.
- */
-void avltree_iterator(avltree_t * h, avltree_iterator_t * iter)
+void avltree_iterator(avltree_t * h __attribute__((unused)),
+    avltree_iterator_t * iter)
 {
     iter->current_node = 0;
 }
