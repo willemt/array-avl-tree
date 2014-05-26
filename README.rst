@@ -3,7 +3,7 @@ avl-tree
 
 Example Usage
 -------------
-github.com/willemt/YABTorrent/blob/master/src/bt_blacklist.c
+http://github.com/willemt/YABTorrent/blob/master/src/bt_blacklist.c
 
 Tradeoffs
 ---------
