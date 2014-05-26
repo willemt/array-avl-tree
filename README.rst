@@ -1,6 +1,3 @@
-avl-tree
-========
-
 Example Usage
 -------------
 http://github.com/willemt/YABTorrent/blob/master/src/bt_blacklist.c
